@@ -1,11 +1,11 @@
 {
+  "name": "directus-extension-linkmeta-interface",
+  "version": "1.0.0",
+  "private": true,
   "directus:extension": {
-    "hidden": false,
-    "host": "^v9.0.0-rc.95",
+    "host": "^v9.0.0",
     "path": "dist/index.js",
     "source": "src/index.js",
     "type": "interface"
-  },
-  "name": "directus-extension-linkmeta-interface",
-  "version": "1.0.0"
+  }
 }

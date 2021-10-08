@@ -1,6 +1,6 @@
 {
   "name": "directus-extension-linkmeta",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-rc.96",
   "repository": {
     "type": "git",
     "url": "https://github.com/dimitrov-adrian/directus-extension-linkmeta.git"
@@ -11,9 +11,6 @@
   },
   "directus:extension": {
     "type": "pack",
-    "hidden": false,
-    "path": ".",
-    "source": ".",
     "host": "^v9.0.0-rc.95"
   },
   "scripts": {
@@ -46,6 +43,19 @@
     "metascraper-youtube": "^5.24.8"
   },
   "devDependencies": {
-    "@directus/extensions-sdk": "^9.0.0-rc.95"
+    "@directus/extensions-sdk": "^9.0.0-rc.95",
+    "@directus/prettier-config": "^9.0.0-rc.95",
+    "@directus/eslint-config": "^9.0.0-rc.95",
+    "@directus/stylelint-config": "^9.0.0-rc.95"
+  },
+  "prettier": "@directus/prettier-config",
+  "eslintConfig": {
+    "extends": "@directus/eslint-config",
+    "parserOptions": {
+      "sourceType": "module"
+    }
+  },
+  "stylelint": {
+    "extends": "@directus/stylelint-config"
   }
 }

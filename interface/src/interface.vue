@@ -5,13 +5,13 @@
 			:autofocus="autofocus"
 			:placeholder="placeholder"
 			:model-value="localUrl"
-			@update:model-value="onChange"
 			class="url-input"
+			@update:model-value="onChange"
 		>
 			<template #prepend>
-				<v-icon v-if="loading" class="loading" name="data_usage" v-tooltip="t('loading')" />
-				<v-icon v-else-if="localUrl && !isValidUrl" name="priority_high" v-tooltip="t('errors.INVALID_QUERY')" />
-				<v-icon v-else-if="!isChanged" name="verified" v-tooltip="t('success')" />
+				<v-icon v-if="loading" v-tooltip="t('loading')" class="loading" name="data_usage" />
+				<v-icon v-else-if="localUrl && !isValidUrl" v-tooltip="t('errors.INVALID_QUERY')" name="priority_high" />
+				<v-icon v-else-if="!isChanged" v-tooltip="t('success')" name="verified" />
 				<v-icon v-else name="link" />
 			</template>
 
@@ -44,7 +44,6 @@
 					<img
 						v-else-if="['image', 'logo'].includes(previewItem) && localValue[previewItem]"
 						:src="getImageUrl(localValue[previewItem])"
-						rel="noopener"
 					/>
 					<a
 						v-else-if="previewItem === 'url' && localValue[previewItem]"
@@ -74,7 +73,6 @@ import { useI18n } from 'vue-i18n';
 import { defineComponent, ref, watch, computed, inject } from 'vue';
 
 export default defineComponent({
-	emits: ['input'],
 	props: {
 		value: {
 			type: Object,
@@ -121,6 +119,7 @@ export default defineComponent({
 			default: () => ['image', 'url', 'title', 'publisher', 'author', 'date', 'lang', 'logo', 'iframe'],
 		},
 	},
+	emits: ['input'],
 
 	setup(props, { emit }) {
 		const { t } = useI18n();
@@ -130,7 +129,7 @@ export default defineComponent({
 		const localUrl = ref(props.value && props.value.url ? props.value.url : '');
 		const localValue = ref(props.value);
 		const isValidUrl = computed(() => localUrl.value && isUrl(localUrl.value));
-		const isChanged = computed(() => localUrl !== (props.value && props.value.url ? props.value.url : ''));
+		const isChanged = computed(() => localUrl.value !== (props.value && props.value.url ? props.value.url : ''));
 		const canRefresh = computed(
 			() =>
 				isValidUrl.value &&
@@ -240,13 +239,7 @@ export default defineComponent({
 				})
 				.then((data) => {
 					if (props.store && props.store.length > 0) {
-						const result = {};
-						for (const key of props.store) {
-							if (key in data) {
-								result[key] = data[key];
-							}
-						}
-						return result;
+						return Object.assign({}, ...props.store.map((key) => (key in data ? { [key]: data[key] } : {})));
 					}
 
 					return data;
@@ -326,7 +319,7 @@ function escapeRegExp(string) {
 	--v-input-font-family: var(--family-monospace);
 }
 
-.url-input::v-deep(.input) {
+.url-input:deep(.input) {
 	border: none;
 }
 
@@ -340,15 +333,15 @@ function escapeRegExp(string) {
 }
 
 .noround {
-	border-top-right-radius: 0 !important;
 	border-top-left-radius: 0 !important;
+	border-top-right-radius: 0 !important;
 }
 
 .preview {
 	background-color: var(--v-card-background-color);
-	border-top-right-radius: 0;
-	border-top-left-radius: 0;
 	border-top: var(--border-width) solid var(--border-normal);
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
 }
 
 .preview a {
@@ -365,7 +358,7 @@ function escapeRegExp(string) {
 	margin-inline-end: 0.4em;
 }
 
-.preview .property:after {
+.preview .property::after {
 	content: ':';
 }
 
@@ -377,11 +370,11 @@ function escapeRegExp(string) {
 
 .preview-item-iframe .iframe-wrapper-bound .iframe-wrapper {
 	position: relative;
-	padding-bottom: 56.25%;
 	height: 0;
+	padding-bottom: 56.25%;
 }
 
-.preview-item-iframe .iframe-wrapper-bound .iframe-wrapper::v-deep(iframe) {
+.preview-item-iframe .iframe-wrapper-bound .iframe-wrapper:deep(iframe) {
 	position: absolute !important;
 	top: 0 !important;
 	left: 0 !important;

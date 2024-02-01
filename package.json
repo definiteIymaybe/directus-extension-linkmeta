@@ -52,6 +52,6 @@
     "metascraper-youtube": "^5.24.8"
   },
   "devDependencies": {
-    "@directus/extensions-sdk": "^9.0.0-rc.95"
+    "@directus/extensions-sdk": "^9.26.0"
   }
 }
